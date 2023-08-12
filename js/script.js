@@ -8,23 +8,32 @@ class Ingredient{
 }
 
 class Hamburger{
-    static CHEESE = new Ingredient('cheese', 10, 20);
+    static STUFFING_CHEESE = new Ingredient('cheese', 10, 20);
     static SALAD = new Ingredient('salad', 20, 5);
     static POTATO = new Ingredient('potato', 15, 10);
     static TOPPING_SAUCE = new Ingredient('sauce', 15, 0);
     static TOPPING_MAYO = new Ingredient('mayo', 20, 5);
-    constructor(type){
+    static SIZE_SMALL = 'small';
+    static SIZE_BIG = 'big';
+    constructor(size){
+        this.args = arguments;
         this.addedIngred = [];
         this.toppings = [];
-        this.type = type.toLowerCase();
-        this.price = this.getThisPrice();
-        this.calories = this.getThisCalories();
+        this.size = size.toLowerCase();
+        this.checkArguments();
+        this.price = this.countThisPrice();
+        this.calories = this.countThisCalories();
 
     }
+    checkArguments(){
+        for(let i = 1; i < this.args.length; i++){
+            this.addIngred(this.args[i]);
+        }
 
-    getThisPrice(){
+    }
+    countThisPrice(){
         let price = 0;
-        switch(this.type){
+        switch(this.size){
             case 'big':
                 price += 100;
                 break;
@@ -32,15 +41,16 @@ class Hamburger{
                 price += 50;
                 break;
             default:
-                alert("Hamburger can be BIG or SMALL only");
+                console.log("Hamburger can be BIG or SMALL only");
         }
         if (this.addedIngred.length > 0) this.addedIngred.forEach(ingred => price += ingred.price);
         if (this.toppings.length > 0) this.toppings.forEach(topping=> price += topping.price);
         return price;
     }
-    getThisCalories(){
+    countThisCalories(){
         let calories = 0;
-        switch(this.type){
+
+        switch(this.size){
             case 'big':
                 calories += 40;
                 break;
@@ -48,26 +58,48 @@ class Hamburger{
                 calories += 20;
                 break;
             default:
-                alert("Hamburger can be BIG or SMALL only");
+                console.log("Hamburger can be BIG or SMALL only");
         }
         if (this.addedIngred.length > 0) this.addedIngred.forEach(ingred => calories += ingred.calories);
         if (this.toppings.length > 0) this.toppings.forEach(topping=> calories += topping.calories);
         return calories;
     }
+    //I can do just 1 func — addIngred, without addTopping. But I have task conditions
     addIngred(ingred){
-
+        switch(ingred){
+            case Hamburger.STUFFING_CHEESE:
+                this.addedIngred.push(ingred);
+                break;
+            case Hamburger.SALAD:
+                this.addedIngred.push(ingred);
+                break;
+            case Hamburger.POTATO:
+                this.addedIngred.push(ingred);
+                break;
+            case Hamburger.TOPPING_SAUCE:
+                this.toppings.push(ingred);
+                break;
+            case Hamburger.TOPPING_MAYO:
+                this.toppings.push(ingred);
+                break;
+        }
+        this.calories = this.countThisCalories();
+        this.price = this.countThisPrice()
     }
     addTopping(topping){
-        calories
+        this.addIngred(topping);
     }
 }
 
-
-
-const hamburgerSmall = new Hamburger('small');
-const hamburgerBig = new Hamburger('big');
-console.log(hamburgerSmall.price);
-console.log(hamburgerSmall.calories);
-console.log(hamburgerBig.price);
-console.log(hamburgerBig.calories);
-console.log(Hamburger.CHEESE);
+// маленький гамбургер із начинкою із сиру
+const hamburger = new Hamburger(Hamburger.SIZE_SMALL, Hamburger.STUFFING_CHEESE);
+// Добавка з майонезу
+hamburger.addTopping(Hamburger.TOPPING_MAYO);
+// Запитаємо скільки там калорій
+console.log("Calories: " + hamburger.countThisCalories());
+// скільки коштує
+console.log("Price: " + hamburger.countThisPrice());
+// я тут передумав і вирішив додати ще приправу
+hamburger.addTopping(Hamburger.TOPPING_SAUCE);
+// А скільки тепер коштує?
+console.log("Price with sauce: " + hamburger.countThisPrice());
