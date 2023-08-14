@@ -1,2 +1,11 @@
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 @import 'assets/variables';
+
+body{
+    background: url('../img/Frankfurt-Station-fast-food-restaurant-by-Egue-y-Seta-Barcelona.jpg') 0 0/cover no-repeat ;
+}
+#payDesk{
+    min-width: 800px;
+    min-height: 800px;
+    background: url('../img/payDeskCutted.png') 0 0/cover no-repeat ;
+}
